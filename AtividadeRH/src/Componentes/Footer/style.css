@@ -1,0 +1,27 @@
+footer {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  color: #cbd5e1 !important;
+  text-align: center;
+  padding: 30px 20px !important;
+  font-size: 0.9rem;
+  border-top: 3px solid #667eea;
+  margin-top: auto;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.5s ease-out;
+}
+
+footer p {
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
