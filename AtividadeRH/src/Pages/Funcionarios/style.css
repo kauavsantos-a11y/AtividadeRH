@@ -108,7 +108,7 @@
   background: #e0f2fe;
   color: #0f172a;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.08em
 }
 
 .funcionarios-table thead th {
@@ -166,4 +166,23 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+.funcionarios-table thead th {
+  text-align: center;
+}
+
+.funcionarios-table tbody td {
+  text-align: center;
+}
+
+.funcionarios-table tbody td .tag,
+.funcionarios-table tbody td span,
+.funcionarios-table tbody td {
+  color: #334155 !important;        /* Mesma cor exata de 'bruno' e 'aquele' */
+  font-size: 0.95rem !important;    /* Mesmo tamanho exato */
+  font-style: normal !important;    /* Remove o itálico caso exista */
+  font-weight: normal !important;   /* Deixa com o mesmo peso de fonte */
+  background: none !important;      /* Remove qualquer fundo residual */
+  padding: 0 !important;            
 }
