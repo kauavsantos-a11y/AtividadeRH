@@ -2,14 +2,16 @@ package com.example.gestaoInternaBack.dto;
 
 public class ClienteResponseDTO {
     private String nome;
+    private String cpf;
     private String email;
     private String telefone;
 
     public ClienteResponseDTO() {
     }
 
-    public ClienteResponseDTO(String nome, String email, String telefone) {
+    public ClienteResponseDTO(String nome, String cpf, String email, String telefone) {
         this.nome = nome;
+        this.cpf = cpf;
         this.email = email;
         this.telefone = telefone;
     }
@@ -28,6 +30,14 @@ public class ClienteResponseDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public String getTelefone() {

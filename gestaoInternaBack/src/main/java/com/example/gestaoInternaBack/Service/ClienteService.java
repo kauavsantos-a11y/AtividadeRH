@@ -20,6 +20,7 @@ public class ClienteService {
                 .stream()
                 .map(cliente -> new ClienteResponseDTO(
                         cliente.getNome(),
+                        cliente.getCpf(),
                         cliente.getEmail(),
                         cliente.getTelefone()))
                 .toList();

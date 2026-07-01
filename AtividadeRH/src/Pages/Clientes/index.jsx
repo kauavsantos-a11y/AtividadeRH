@@ -1,12 +1,31 @@
 import './style.css';
+import { useEffect, useState } from 'react';
+import { fetchClientes } from '../../Service/api.js';
 
 export default function Clientes() {
-  const clientes = [
-    { id: 1, nome: 'Empresa ABC', produto: 'Portal RH', segmento: 'Saúde', email: 'contato@abc.com', telefone: '(11) 1234-5678' },
-    { id: 2, nome: 'Tech Solutions', produto: 'Consultoria', segmento: 'TI', email: 'info@tech.com', telefone: '(11) 9876-5432' },
-    { id: 3, nome: 'Digital Inovação', produto: 'Suporte Premium', segmento: 'Marketing', email: 'vendas@digital.com', telefone: '(21) 3333-4444' },
-    { id: 4, nome: 'Logística Forte', produto: 'Portal RH', segmento: 'Logística', email: 'contato@logistica.com', telefone: '(11) 5555-6666' },
-  ];
+  const [clientes, setClientes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const loadClientes = () => {
+    setLoading(true);
+    setError(null);
+    fetchClientes()
+      .then((data) => {
+        setClientes(data);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError('Não foi possível carregar os clientes.');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    loadClientes();
+  }, []);
 
   return (
     <div className="clientes-container">
@@ -14,57 +33,56 @@ export default function Clientes() {
         <div>
           <p className="mini-title">Clientes</p>
           <h1>Gestão de contas estratégicas</h1>
-          <p className="hero-description">Acompanhe seus clientes com foco em produto, segmento e performance de atendimento.</p>
-        </div>
-
-        <div className="hero-pill-group">
-          <span className="hero-pill hero-pill-primary">Portal RH</span>
-          <span className="hero-pill hero-pill-secondary">Consultoria</span>
-          <span className="hero-pill hero-pill-tertiary">Suporte Premium</span>
-        </div>
-      </div>
-
-      <div className="clientes-metrics">
-        <div className="metric-card metric-blue">
-          <h3>4</h3>
-          <p>Contas ativas</p>
-        </div>
-        <div className="metric-card metric-purple">
-          <h3>3</h3>
-          <p>Segmentos atendidos</p>
-        </div>
-        <div className="metric-card metric-green">
-          <h3>98%</h3>
-          <p>NPS médio</p>
+          <p className="hero-description">Adicione novos clientes e acompanhe seus dados em um painel centralizado.</p>
         </div>
       </div>
 
       <div className="clientes-table-card">
-        <table className="clientes-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Empresa</th>
-              <th>Produto</th>
-              <th>Segmento</th>
-              <th>Email</th>
-              <th>Telefone</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clientes.map((cliente) => (
-              <tr key={cliente.id}>
-                <td>{cliente.id}</td>
-                <td>{cliente.nome}</td>
-                <td><span className={`tag tag-${cliente.produto.replace(/\s+/g, '').toLowerCase()}`}>{cliente.produto}</span></td>
-                <td>{cliente.segmento}</td>
-                <td>{cliente.email}</td>
-                <td>{cliente.telefone}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          {loading ? (
+            <div className="loading-text">Carregando clientes...</div>
+          ) : error ? (
+            <div className="error-text">{error}</div>
+          ) : (
+            <>
+              <div className="clientes-metrics">
+                <div className="metric-card metric-blue">
+                  <h3>{clientes.length}</h3>
+                  <p>Contas ativas</p>
+                </div>
+                <div className="metric-card metric-purple">
+                  <h3>—</h3>
+                  <p>Segmentos atendidos</p>
+                </div>
+                <div className="metric-card metric-green">
+                  <h3>98%</h3>
+                  <p>NPS médio</p>
+                </div>
+              </div>
+              <table className="clientes-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {clientes.map((cliente, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{cliente.nome}</td>
+                      <td>{cliente.cpf}</td>
+                      <td>{cliente.email}</td>
+                      <td>{cliente.telefone}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
+        </div>
       </div>
-    </div>
   );
 }

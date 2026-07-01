@@ -6,16 +6,18 @@ public class FuncionarioResponseDTO {
     private String telefone;
     private String cargo;
     private String setor;
+    private Double salario;
 
     public FuncionarioResponseDTO() {
     }
 
-    public FuncionarioResponseDTO(String nome, String email, String telefone, String cargo, String setor) {
+    public FuncionarioResponseDTO(String nome, String email, String telefone, String cargo, String setor, Double salario) {
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
         this.cargo = cargo;
         this.setor = setor;
+        this.salario = salario;
     }
 
     public String getNome() {
@@ -56,5 +58,13 @@ public class FuncionarioResponseDTO {
 
     public void setSetor(String setor) {
         this.setor = setor;
+    }
+
+    public Double getSalario() {
+        return salario;
+    }
+
+    public void setSalario(Double salario) {
+        this.salario = salario;
     }
 }

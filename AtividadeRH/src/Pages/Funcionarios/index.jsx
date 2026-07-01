@@ -1,12 +1,25 @@
 import './style.css';
+import { useEffect, useState } from 'react';
+import { fetchFuncionarios } from '../../Service/api.js';
 
 export default function Funcionarios() {
-  const funcionarios = [
-    { id: 1, nome: 'João Silva', cargo: 'Desenvolvedor Full Stack', departamento: 'TI', nivel: 'Sênior' },
-    { id: 2, nome: 'Maria Santos', cargo: 'UX Designer', departamento: 'Design', nivel: 'Pleno' },
-    { id: 3, nome: 'Pedro Costa', cargo: 'Gerente de RH', departamento: 'RH', nivel: 'Sênior' },
-    { id: 4, nome: 'Ana Pereira', cargo: 'Analista de Produto', departamento: 'Produto', nivel: 'Pleno' },
-  ];
+  const [funcionarios, setFuncionarios] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchFuncionarios()
+      .then((data) => {
+        setFuncionarios(data);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError('Não foi possível carregar os funcionários.');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <div className="funcionarios-container">
@@ -26,42 +39,48 @@ export default function Funcionarios() {
 
       <div className="funcionarios-metrics">
         <div className="metric-card metric-slate">
-          <h3>4</h3>
+          <h3>{funcionarios.length}</h3>
           <p>Colaboradores</p>
         </div>
         <div className="metric-card metric-indigo">
-          <h3>3</h3>
+          <h3>{new Set(funcionarios.map((f) => f.setor)).size || '-'}</h3>
           <p>Áreas ativas</p>
         </div>
         <div className="metric-card metric-teal">
-          <h3>2</h3>
+          <h3>{new Set(funcionarios.map((f) => f.cargo)).size || '-'}</h3>
           <p>Níveis de senioridade</p>
         </div>
       </div>
 
       <div className="funcionarios-table-card">
-        <table className="funcionarios-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Cargo</th>
-              <th>Departamento</th>
-              <th>Nível</th>
-            </tr>
-          </thead>
-          <tbody>
-            {funcionarios.map((func) => (
-              <tr key={func.id}>
-                <td>{func.id}</td>
-                <td>{func.nome}</td>
-                <td>{func.cargo}</td>
-                <td><span className={`tag tag-${func.departamento.toLowerCase()}`}>{func.departamento}</span></td>
-                <td><span className={`level-badge level-${func.nivel.toLowerCase()}`}>{func.nivel}</span></td>
+        {loading ? (
+          <div className="loading-text">Carregando funcionários...</div>
+        ) : error ? (
+          <div className="error-text">{error}</div>
+        ) : (
+          <table className="funcionarios-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Cargo</th>
+                <th>Setor</th>
+                <th>Salário</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {funcionarios.map((funcionario, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{funcionario.nome}</td>
+                  <td>{funcionario.cargo}</td>
+                  <td><span className={`tag tag-${funcionario.setor?.toLowerCase() ?? 'desconhecido'}`}>{funcionario.setor}</span></td>
+                  <td>{funcionario.salario ? `R$ ${funcionario.salario.toFixed(2)}` : '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

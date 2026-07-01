@@ -22,7 +22,8 @@ public class FuncionarioService {
                         funcionario.getEmail(),
                         funcionario.getTelefone(),
                         funcionario.getCargo(),
-                        funcionario.getSetor()))
+                        funcionario.getSetor(),
+                        funcionario.getSalario()))
                 .toList();
     }
 
